@@ -184,18 +184,23 @@
   </div>
 
   <script>
-    function handleSubmit() {
-      const username = document.getElementById('username').value.trim();
-      const hobby = document.getElementById('hobby').value.trim();
-      if (!username || !hobby) { alert('Please fill in both fields.'); return; }
-      const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
-      submissions.push({ username, hobby, time: new Date().toLocaleString() });
-      localStorage.setItem('submissions', JSON.stringify(submissions));
-      document.getElementById('username').value = '';
-      document.getElementById('hobby').value = '';
-      document.getElementById('success').style.display = 'block';
-      setTimeout(() => document.getElementById('success').style.display = 'none', 3000);
-    }
+   function handleSubmit() {
+  const username = document.getElementById('username').value.trim();
+  const hobby = document.getElementById('hobby').value.trim();
+  if (!username || !hobby) { alert('Please fill in both fields.'); return; }
+
+  const SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify({ username, hobby, time: new Date().toLocaleString() })
+  }).then(() => {
+    document.getElementById('username').value = '';
+    document.getElementById('hobby').value = '';
+    document.getElementById('success').style.display = 'block';
+    setTimeout(() => document.getElementById('success').style.display = 'none', 3000);
+  }).catch(() => alert('Submission failed. Try again.'));
+}
   </script>
 </body>
 </html>
